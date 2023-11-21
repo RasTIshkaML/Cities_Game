@@ -1,6 +1,10 @@
 from goroda import gorodaList
 import random
 
+def find_last_letter(word):
+    char = word[-2] if word[-1] in ["ь", "ы"] else word[-1]
+    return char
+
 print("""░░░│
 ░░╔╧╗
 ░╔╝▀╚╗
@@ -22,6 +26,7 @@ Game = True
 print("___Ход компьютера___")
 compCity = random.choice(gorodaList)
 compCity = 'Казань'
+lastLetter = find_last_letter(compCity)
 print(compCity)
 gorodaUsed.append(compCity)
 gorodaList.remove(compCity)
@@ -40,20 +45,22 @@ while Game:
             print("Этого города не существует!")
         elif userCity in gorodaUsed:
             print("Этот город уже был!")
-        elif userCity[0].lower() != compCity[-1] and (compCity[-1] == "ь" and userCity[0].lower() != compCity[-2]):
+        elif userCity[0].lower() != lastLetter:
             print("Город не подходит!")
         else:
             gorodaUsed.append(userCity)
             gorodaList.remove(userCity)
+            lastLetter = find_last_letter(userCity)
             break
 
     if Game:
         print("___Ход компьютера___")
         for compCity in gorodaList:
-            if compCity[0].lower() == userCity[-1]:
+            if compCity[0].lower() == lastLetter:
                 print(compCity)
                 gorodaUsed.append(compCity)
                 gorodaList.remove(compCity)
+                lastLetter = find_last_letter(compCity)
                 break
 
         else:
