@@ -1,9 +1,22 @@
 from goroda import gorodaList
 import random
 
+
 def find_last_letter(word):
     char = word[-2] if word[-1] in ["ь", "ы"] else word[-1]
     return char
+
+
+def find_correct_cities(letter: str, goroda: list):
+    correctCities = []
+    for gorod in goroda:
+        if gorod[0].lower() == letter:
+            correctCities.append(gorod)
+    if len(correctCities) > 0:
+        return random.choice(correctCities)
+    else:
+        return False
+
 
 print("""░░░│
 ░░╔╧╗
@@ -31,7 +44,6 @@ print(compCity)
 gorodaUsed.append(compCity)
 gorodaList.remove(compCity)
 
-
 while Game:
     # --------сделать так, чтобы пользователь вводил города до тех пор, пока не введет верный----
     while True:
@@ -55,14 +67,12 @@ while Game:
 
     if Game:
         print("___Ход компьютера___")
-        for compCity in gorodaList:
-            if compCity[0].lower() == lastLetter:
-                print(compCity)
-                gorodaUsed.append(compCity)
-                gorodaList.remove(compCity)
-                lastLetter = find_last_letter(compCity)
-                break
-
+        compCity = find_correct_cities(lastLetter, gorodaList)
+        if compCity:
+            print(compCity)
+            gorodaUsed.append(compCity)
+            gorodaList.remove(compCity)
+            lastLetter = find_last_letter(compCity)
         else:
             print('Компьютер Проиграл')
             Game = False
